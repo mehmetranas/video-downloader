@@ -6,17 +6,24 @@ All routes, models, registry, and scheduler in a single file (by design).
 # ---------------------------------------------------------------------------
 # Imports
 # ---------------------------------------------------------------------------
+import glob
 import logging
 import os
 import threading
+import uuid
 from contextlib import asynccontextmanager
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import datetime, timedelta
+from typing import Literal
+
+import yt_dlp
+from pydantic import BaseModel
 
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.interval import IntervalTrigger
 from dotenv import load_dotenv
 from fastapi import Depends, FastAPI, HTTPException, Request, Security
+from fastapi.responses import FileResponse
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from fastapi.security import APIKeyHeader
@@ -73,6 +80,32 @@ class FileRecord:
     duration: int
     expires_at: datetime
     content_type: str
+
+
+# ---------------------------------------------------------------------------
+# Pydantic request/response models
+# ---------------------------------------------------------------------------
+class DownloadRequest(BaseModel):
+    url: str
+    quality: Literal["best", "1080p", "720p", "480p", "audio-only"] = "best"
+
+
+class DownloadResponse(BaseModel):
+    download_url: str
+    expires_at: datetime
+    filename: str
+    title: str
+    duration: int
+
+
+# ---------------------------------------------------------------------------
+# Playlist detection helper (synchronous — call via asyncio.to_thread)
+# ---------------------------------------------------------------------------
+def _check_playlist(url: str) -> bool:
+    """Returns True if the URL resolves to a playlist. Synchronous — use via asyncio.to_thread."""
+    with yt_dlp.YoutubeDL({"quiet": True, "no_warnings": True}) as ydl:
+        info = ydl.extract_info(url, download=False, process=False)
+    return info.get("_type") == "playlist"
 
 
 # ---------------------------------------------------------------------------
