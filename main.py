@@ -51,10 +51,10 @@ COOKIES_FILE: str | None = os.environ.get("COOKIES_FILE")
 TTL_HOURS: int = 1
 
 QUALITY_MAP: dict[str, str] = {
-    "best":       "bestvideo+bestaudio/best",
-    "1080p":      "bestvideo[height<=1080]+bestaudio/best[height<=1080]",
-    "720p":       "bestvideo[height<=720]+bestaudio/best[height<=720]",
-    "480p":       "bestvideo[height<=480]+bestaudio/best[height<=480]",
+    "best":       "bestvideo+bestaudio/bestvideo*+bestaudio/best",
+    "1080p":      "bestvideo[height<=1080]+bestaudio/bestvideo[height<=1080]/best[height<=1080]/best",
+    "720p":       "bestvideo[height<=720]+bestaudio/bestvideo[height<=720]/best[height<=720]/best",
+    "480p":       "bestvideo[height<=480]+bestaudio/bestvideo[height<=480]/best[height<=480]/best",
     "audio-only": "bestaudio/best",
 }
 
