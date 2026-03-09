@@ -7,18 +7,18 @@
 
 ### Download
 
-- [ ] **DL-01**: Kullanıcı video URL'si ve kalite parametresi (best/1080p/720p/480p/audio-only) ile POST /download isteği gönderebilir
-- [ ] **DL-02**: Başarılı indirmede API `download_url`, `expires_at`, `filename`, `title`, `duration` içeren JSON döner
+- [x] **DL-01**: Kullanıcı video URL'si ve kalite parametresi (best/1080p/720p/480p/audio-only) ile POST /download isteği gönderebilir
+- [x] **DL-02**: Başarılı indirmede API `download_url`, `expires_at`, `filename`, `title`, `duration` içeren JSON döner
 
 ### File Serving
 
-- [ ] **FILE-01**: Kullanıcı GET /files/{id} ile doğru Content-Type ve Content-Disposition header'larıyla binary dosyayı indirebilir
-- [ ] **FILE-02**: GET /files/{id} kayıt yoksa 404, süresi dolmuşsa 410 döner
+- [x] **FILE-01**: Kullanıcı GET /files/{id} ile doğru Content-Type ve Content-Disposition header'larıyla binary dosyayı indirebilir
+- [x] **FILE-02**: GET /files/{id} kayıt yoksa 404, süresi dolmuşsa 410 döner
 
 ### Security
 
 - [x] **SEC-01**: Tüm endpoint'ler (GET /health hariç) X-API-Key header doğrulaması gerektirir
-- [ ] **SEC-02**: Playlist URL'leri 422 hatasıyla reddedilir
+- [x] **SEC-02**: Playlist URL'leri 422 hatasıyla reddedilir
 
 ### Operations
 
@@ -65,12 +65,12 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| DL-01 | Phase 1 | Pending |
-| DL-02 | Phase 1 | Pending |
-| FILE-01 | Phase 1 | Pending |
-| FILE-02 | Phase 1 | Pending |
+| DL-01 | Phase 1 | Complete (01-02) |
+| DL-02 | Phase 1 | Complete (01-02) |
+| FILE-01 | Phase 1 | Complete (01-02) |
+| FILE-02 | Phase 1 | Complete (01-02) |
 | SEC-01 | Phase 1 | Complete (01-01) |
-| SEC-02 | Phase 1 | Pending |
+| SEC-02 | Phase 1 | Complete (01-02) |
 | OPS-01 | Phase 1 | Complete (01-01) |
 | OPS-02 | Phase 1 | Complete (01-01) |
 | OPS-03 | Phase 1 | Complete (01-01) |
@@ -84,4 +84,4 @@
 
 ---
 *Requirements defined: 2026-03-09*
-*Last updated: 2026-03-09 after 01-01 plan completion (SEC-01, OPS-01, OPS-02, OPS-03 marked complete)*
+*Last updated: 2026-03-09 after 01-02 plan completion (DL-01, DL-02, FILE-01, FILE-02, SEC-02 marked complete)*

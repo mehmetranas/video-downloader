@@ -46,5 +46,5 @@ Phases execute in numeric order: 1 → 2
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Core Application | 1/3 | In progress | - |
+| 1. Core Application | 2/3 | In progress | - |
 | 2. Docker and Deployment | 0/? | Not started | - |

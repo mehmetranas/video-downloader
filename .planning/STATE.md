@@ -10,28 +10,28 @@ See: .planning/PROJECT.md (updated 2026-03-09)
 ## Current Position
 
 Phase: 1 of 2 (Core Application)
-Plan: 1 of 3 in current phase
+Plan: 2 of 3 in current phase
 Status: In progress
-Last activity: 2026-03-09 — Completed Plan 01: FastAPI app foundation
+Last activity: 2026-03-09 — Completed Plan 02: POST /download and GET /files/{file_id} routes
 
-Progress: [██░░░░░░░░] 17%
+Progress: [████░░░░░░] 33%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 1
-- Average duration: 3 min
-- Total execution time: 0.05 hours
+- Total plans completed: 2
+- Average duration: 5 min
+- Total execution time: 0.17 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| 01-core-application | 1 | 3 min | 3 min |
+| 01-core-application | 2 | 10 min | 5 min |
 
 **Recent Trend:**
-- Last 5 plans: 3 min
-- Trend: baseline
+- Last 5 plans: 3 min, 7 min
+- Trend: stable
 
 *Updated after each plan completion*
 
@@ -49,6 +49,10 @@ Recent decisions affecting current work:
 - [01-01] Lock released before os.remove() in cleanup_expired() — avoids holding lock during slow disk I/O
 - [01-01] Error response shape: {error, status_code} for HTTP; {error, detail} for validation; {error} for 500
 - [01-01] Startup guard raises RuntimeError if API_KEY empty — prevents silent auth bypass with blank key
+- [01-02] asyncio.to_thread for both _check_playlist and download_video — yt-dlp I/O never blocks the event loop
+- [01-02] glob-based file resolution after yt-dlp download — postprocessors can change output extension (e.g., webm -> mp4)
+- [01-02] content_type: audio/mp4 for audio-only, video/mp4 for all video qualities — deterministic mapping
+- [01-02] noplaylist=True on yt-dlp options as belt-and-suspenders even after playlist guard check
 
 ### Pending Todos
 
@@ -62,5 +66,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-03-09
-Stopped at: Completed 01-core-application/01-PLAN.md — FastAPI app foundation scaffolded. Ready for Plan 02 (download routes).
+Stopped at: Completed 01-core-application/02-PLAN.md — POST /download and GET /files/{file_id} routes implemented. Ready for Plan 03 (checkpoint: real YouTube URL test).
 Resume file: None
