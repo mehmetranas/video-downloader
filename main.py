@@ -6,6 +6,7 @@ All routes, models, registry, and scheduler in a single file (by design).
 # ---------------------------------------------------------------------------
 # Imports
 # ---------------------------------------------------------------------------
+import asyncio
 import glob
 import logging
 import os
@@ -233,4 +234,82 @@ async def health():
     return {"status": "ok"}
 
 
-# POST /download and GET /files/{file_id} will be added in Plan 02
+def download_video(url: str, quality: str, file_id: str) -> dict:
+    """Synchronous yt-dlp download. Call via asyncio.to_thread — never call directly from async."""
+    is_audio_only = quality == "audio-only"
+    ydl_opts = {
+        "format": QUALITY_MAP[quality],
+        "outtmpl": os.path.join(DOWNLOAD_DIR, f"{file_id}.%(ext)s"),
+        "noplaylist": True,
+        "quiet": True,
+        "no_warnings": True,
+    }
+    if not is_audio_only:
+        ydl_opts["merge_output_format"] = "mp4"
+
+    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+        info = ydl.extract_info(url, download=True)
+
+    # Find actual output file (extension may differ from outtmpl due to postprocessors)
+    matches = glob.glob(os.path.join(DOWNLOAD_DIR, f"{file_id}.*"))
+    if not matches:
+        raise RuntimeError(f"Download completed but output file not found for {file_id}")
+    actual_path = matches[0]
+    actual_filename = os.path.basename(actual_path)
+    content_type = "audio/mp4" if is_audio_only else "video/mp4"
+
+    return {
+        "path": actual_path,
+        "filename": actual_filename,
+        "title": info.get("title", "video"),
+        "duration": int(info.get("duration") or 0),
+        "content_type": content_type,
+    }
+
+
+@app.post("/download", response_model=DownloadResponse)
+async def download(request: Request, body: DownloadRequest, _: str = Depends(verify_api_key)):
+    # Playlist check (runs in thread to avoid blocking event loop)
+    is_playlist = await asyncio.to_thread(_check_playlist, body.url)
+    if is_playlist:
+        raise HTTPException(status_code=422, detail="Playlist URLs are not supported")
+
+    file_id = str(uuid.uuid4())
+    result = await asyncio.to_thread(download_video, body.url, body.quality, file_id)
+
+    expires_at = datetime.utcnow() + timedelta(hours=TTL_HOURS)
+    record = FileRecord(
+        file_id=file_id,
+        path=result["path"],
+        filename=result["filename"],
+        title=result["title"],
+        duration=result["duration"],
+        expires_at=expires_at,
+        content_type=result["content_type"],
+    )
+    register_file(record)
+
+    download_url = str(request.base_url) + f"files/{file_id}"
+    return DownloadResponse(
+        download_url=download_url,
+        expires_at=expires_at,
+        filename=result["filename"],
+        title=result["title"],
+        duration=result["duration"],
+    )
+
+
+@app.get("/files/{file_id}")
+async def serve_file(file_id: str, _: str = Depends(verify_api_key)):
+    record = get_file(file_id)
+    if record is None:
+        raise HTTPException(status_code=404, detail="File not found")
+    if record.expires_at < datetime.utcnow():
+        raise HTTPException(status_code=410, detail="File has expired")
+    if not os.path.exists(record.path):
+        raise HTTPException(status_code=404, detail="File not found on disk")
+    return FileResponse(
+        path=record.path,
+        filename=record.filename,
+        media_type=record.content_type,
+    )
