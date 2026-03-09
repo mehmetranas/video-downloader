@@ -12,7 +12,7 @@ Two phases: build the complete FastAPI application (download, serve, auth, clean
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Core Application** - Complete FastAPI service: download, file serving, auth, cleanup, and structured errors
+- [x] **Phase 1: Core Application** - Complete FastAPI service: download, file serving, auth, cleanup, and structured errors (completed 2026-03-09)
 - [ ] **Phase 2: Docker and Deployment** - Coolify-deployable Docker image with correct proxy timeout and env-based configuration
 
 ## Phase Details
@@ -46,5 +46,5 @@ Phases execute in numeric order: 1 → 2
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Core Application | 2/3 | In progress | - |
+| 1. Core Application | 3/3 | Complete   | 2026-03-09 |
 | 2. Docker and Deployment | 0/? | Not started | - |

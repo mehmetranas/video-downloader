@@ -10,11 +10,11 @@ See: .planning/PROJECT.md (updated 2026-03-09)
 ## Current Position
 
 Phase: 1 of 2 (Core Application)
-Plan: 2 of 3 in current phase
-Status: In progress
-Last activity: 2026-03-09 — Completed Plan 02: POST /download and GET /files/{file_id} routes
+Plan: 3 of 3 in current phase
+Status: Phase complete
+Last activity: 2026-03-09 — Completed Plan 03: End-to-end P0 verification — all 5 Phase 1 success criteria verified TRUE
 
-Progress: [████░░░░░░] 33%
+Progress: [█████░░░░░] 50%
 
 ## Performance Metrics
 
@@ -53,6 +53,7 @@ Recent decisions affecting current work:
 - [01-02] glob-based file resolution after yt-dlp download — postprocessors can change output extension (e.g., webm -> mp4)
 - [01-02] content_type: audio/mp4 for audio-only, video/mp4 for all video qualities — deterministic mapping
 - [01-02] noplaylist=True on yt-dlp options as belt-and-suspenders even after playlist guard check
+- [01-03] nocheckcertificate: True in yt-dlp opts for both _check_playlist and download_video — self-signed SSL cert in network chain; required for target environment
 
 ### Pending Todos
 
@@ -60,11 +61,11 @@ None yet.
 
 ### Blockers/Concerns
 
-- [Phase 1]: YouTube PO token behavior in containerized environments is unconfirmed — treat real YouTube URL test as P0 verification step immediately in Phase 1
+- [Phase 1 — RESOLVED]: YouTube PO token P0 risk did not materialize. SSL self-signed cert was the actual blocker; fixed with nocheckcertificate: True in yt-dlp opts.
 - [Phase 2]: Traefik timeout label syntax for Coolify-bundled version is MEDIUM confidence — verify against live Coolify docs before writing production docker-compose
 
 ## Session Continuity
 
 Last session: 2026-03-09
-Stopped at: Completed 01-core-application/02-PLAN.md — POST /download and GET /files/{file_id} routes implemented. Ready for Plan 03 (checkpoint: real YouTube URL test).
+Stopped at: Completed 01-core-application/03-PLAN.md — Phase 1 complete. All 5 success criteria verified TRUE. Ready for Phase 2 (deployment).
 Resume file: None
