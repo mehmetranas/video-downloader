@@ -47,6 +47,7 @@ if not API_KEY:
 # Constants
 # ---------------------------------------------------------------------------
 DOWNLOAD_DIR: str = os.environ.get("DOWNLOAD_DIR", "/tmp/downloads")
+COOKIES_FILE: str | None = os.environ.get("COOKIES_FILE")
 TTL_HOURS: int = 1
 
 QUALITY_MAP: dict[str, str] = {
@@ -104,7 +105,10 @@ class DownloadResponse(BaseModel):
 # ---------------------------------------------------------------------------
 def _check_playlist(url: str) -> bool:
     """Returns True if the URL resolves to a playlist. Synchronous — use via asyncio.to_thread."""
-    with yt_dlp.YoutubeDL({"quiet": True, "no_warnings": True, "nocheckcertificate": True, "extractor_args": {"youtube": {"player_client": ["ios"]}}}) as ydl:
+    opts: dict = {"quiet": True, "no_warnings": True, "nocheckcertificate": True, "extractor_args": {"youtube": {"player_client": ["ios"]}}}
+    if COOKIES_FILE and os.path.exists(COOKIES_FILE):
+        opts["cookiefile"] = COOKIES_FILE
+    with yt_dlp.YoutubeDL(opts) as ydl:
         info = ydl.extract_info(url, download=False, process=False)
     return info.get("_type") == "playlist"
 
@@ -246,6 +250,8 @@ def download_video(url: str, quality: str, file_id: str) -> dict:
         "nocheckcertificate": True,
         "extractor_args": {"youtube": {"player_client": ["ios"]}},
     }
+    if COOKIES_FILE and os.path.exists(COOKIES_FILE):
+        ydl_opts["cookiefile"] = COOKIES_FILE
     if not is_audio_only:
         ydl_opts["merge_output_format"] = "mp4"
 
