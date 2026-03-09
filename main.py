@@ -104,7 +104,7 @@ class DownloadResponse(BaseModel):
 # ---------------------------------------------------------------------------
 def _check_playlist(url: str) -> bool:
     """Returns True if the URL resolves to a playlist. Synchronous — use via asyncio.to_thread."""
-    with yt_dlp.YoutubeDL({"quiet": True, "no_warnings": True}) as ydl:
+    with yt_dlp.YoutubeDL({"quiet": True, "no_warnings": True, "nocheckcertificate": True}) as ydl:
         info = ydl.extract_info(url, download=False, process=False)
     return info.get("_type") == "playlist"
 
@@ -243,6 +243,7 @@ def download_video(url: str, quality: str, file_id: str) -> dict:
         "noplaylist": True,
         "quiet": True,
         "no_warnings": True,
+        "nocheckcertificate": True,
     }
     if not is_audio_only:
         ydl_opts["merge_output_format"] = "mp4"
