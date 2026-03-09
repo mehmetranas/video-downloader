@@ -1,0 +1,6 @@
+fastapi[standard]==0.135.1
+uvicorn[standard]
+yt-dlp==2026.3.3
+APScheduler==3.11.2
+python-dotenv
+python-multipart
