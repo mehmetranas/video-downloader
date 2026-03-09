@@ -17,14 +17,14 @@
 
 ### Security
 
-- [ ] **SEC-01**: Tüm endpoint'ler (GET /health hariç) X-API-Key header doğrulaması gerektirir
+- [x] **SEC-01**: Tüm endpoint'ler (GET /health hariç) X-API-Key header doğrulaması gerektirir
 - [ ] **SEC-02**: Playlist URL'leri 422 hatasıyla reddedilir
 
 ### Operations
 
-- [ ] **OPS-01**: Dosyalar 1 saatlik TTL sonrası arka planda otomatik silinir (5 dakikada bir çalışır)
-- [ ] **OPS-02**: GET /health endpoint Coolify container hazırlık kontrolü için hizmet durumunu döner
-- [ ] **OPS-03**: Tüm API hataları yapılandırılmış JSON formatında döner
+- [x] **OPS-01**: Dosyalar 1 saatlik TTL sonrası arka planda otomatik silinir (5 dakikada bir çalışır)
+- [x] **OPS-02**: GET /health endpoint Coolify container hazırlık kontrolü için hizmet durumunu döner
+- [x] **OPS-03**: Tüm API hataları yapılandırılmış JSON formatında döner
 
 ### Deployment
 
@@ -69,11 +69,11 @@
 | DL-02 | Phase 1 | Pending |
 | FILE-01 | Phase 1 | Pending |
 | FILE-02 | Phase 1 | Pending |
-| SEC-01 | Phase 1 | Pending |
+| SEC-01 | Phase 1 | Complete (01-01) |
 | SEC-02 | Phase 1 | Pending |
-| OPS-01 | Phase 1 | Pending |
-| OPS-02 | Phase 1 | Pending |
-| OPS-03 | Phase 1 | Pending |
+| OPS-01 | Phase 1 | Complete (01-01) |
+| OPS-02 | Phase 1 | Complete (01-01) |
+| OPS-03 | Phase 1 | Complete (01-01) |
 | DEPLOY-01 | Phase 2 | Pending |
 | DEPLOY-02 | Phase 2 | Pending |
 
@@ -84,4 +84,4 @@
 
 ---
 *Requirements defined: 2026-03-09*
-*Last updated: 2026-03-09 after roadmap creation*
+*Last updated: 2026-03-09 after 01-01 plan completion (SEC-01, OPS-01, OPS-02, OPS-03 marked complete)*

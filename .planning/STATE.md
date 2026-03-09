@@ -10,28 +10,28 @@ See: .planning/PROJECT.md (updated 2026-03-09)
 ## Current Position
 
 Phase: 1 of 2 (Core Application)
-Plan: 0 of ? in current phase
-Status: Ready to plan
-Last activity: 2026-03-09 — Roadmap created
+Plan: 1 of 3 in current phase
+Status: In progress
+Last activity: 2026-03-09 — Completed Plan 01: FastAPI app foundation
 
-Progress: [░░░░░░░░░░] 0%
+Progress: [██░░░░░░░░] 17%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 0
-- Average duration: -
-- Total execution time: 0 hours
+- Total plans completed: 1
+- Average duration: 3 min
+- Total execution time: 0.05 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| - | - | - | - |
+| 01-core-application | 1 | 3 min | 3 min |
 
 **Recent Trend:**
-- Last 5 plans: -
-- Trend: -
+- Last 5 plans: 3 min
+- Trend: baseline
 
 *Updated after each plan completion*
 
@@ -45,6 +45,10 @@ Recent decisions affecting current work:
 - Sync download (POST blocks until complete) — iOS Shortcuts cannot implement async polling loops
 - yt-dlp called via run_in_executor — must never block the async event loop; bake this in from the first line of download logic
 - In-memory dict with threading.Lock for FileRegistry — no database or cache layer needed at this scope
+- [01-01] BackgroundScheduler (not AsyncIOScheduler) — separate thread for file I/O cleanup avoids event loop blocking
+- [01-01] Lock released before os.remove() in cleanup_expired() — avoids holding lock during slow disk I/O
+- [01-01] Error response shape: {error, status_code} for HTTP; {error, detail} for validation; {error} for 500
+- [01-01] Startup guard raises RuntimeError if API_KEY empty — prevents silent auth bypass with blank key
 
 ### Pending Todos
 
@@ -58,5 +62,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-03-09
-Stopped at: Roadmap created, STATE.md initialized. Ready to run /gsd:plan-phase 1.
+Stopped at: Completed 01-core-application/01-PLAN.md — FastAPI app foundation scaffolded. Ready for Plan 02 (download routes).
 Resume file: None

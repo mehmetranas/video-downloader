@@ -27,7 +27,7 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. Any request missing or providing a wrong X-API-Key returns 401; a playlist URL returns 422
   4. Files older than 1 hour are automatically deleted by the background scheduler (runs every 5 minutes); disk does not accumulate stale files
   5. GET /health returns a 200 response and all API errors return structured JSON (never unformatted tracebacks)
-**Plans**: TBD
+**Plans**: 3 total (01: Foundation, 02: Download routes, 03: File serving + playlist guard)
 
 ### Phase 2: Docker and Deployment
 **Goal**: The service runs in a Docker container on Coolify, survives proxy timeout constraints, and is fully configured via environment variables
@@ -46,5 +46,5 @@ Phases execute in numeric order: 1 → 2
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Core Application | 0/? | Not started | - |
+| 1. Core Application | 1/3 | In progress | - |
 | 2. Docker and Deployment | 0/? | Not started | - |
